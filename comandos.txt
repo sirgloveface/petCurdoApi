@@ -1,0 +1,15 @@
+//Instale express
+npm install express-generator -g
+//Ayuda
+express -h
+//Crear esqueleto con motor de vista pug
+express --view=pug myapp
+//Install forever para correr la aplicacion como un task
+npm install -g forever
+
+//Correr forever
+forever start server.js
+//Listar task forever
+ps -ef|grep  node|grep -v grep
+//Stop forever 
+forever stop server.js
