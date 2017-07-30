@@ -17,3 +17,5 @@ forever stop server.js
 cf login -u  XXXXXX@gmail.com -p clave
 //Verificar si el build pack de node esta instalado
 cf buildpacks
+//Subir apicacion a pivotal
+cf push petCurdoApi -c "node server.js"
