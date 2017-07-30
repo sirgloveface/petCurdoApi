@@ -13,3 +13,7 @@ forever start server.js
 ps -ef|grep  node|grep -v grep
 //Stop forever 
 forever stop server.js
+//Login pivotal
+cf login -u  XXXXXX@gmail.com -p clave
+//Verificar si el build pack de node esta instalado
+cf buildpacks

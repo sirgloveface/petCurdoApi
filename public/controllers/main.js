@@ -1,6 +1,5 @@
 'use strict';
 app.controller('mainController', function ($scope, generalFactory) {
-
     $scope.list = {};
     generalFactory.getList().
             then(function (response) {
@@ -14,11 +13,6 @@ app.controller('mainController', function ($scope, generalFactory) {
             .finally(function () {
                 console.log("finally");
             });
-
-
-
-
-
 });
 
 
