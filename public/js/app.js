@@ -1,7 +1,7 @@
 'use strict';
 
 
-var app = angular.module('petCurdoApi', ['ngRoute']);
+var app = angular.module('petCurdoApi', ['ngRoute','pubnub.angular.service']);
 
 app.config(function($routeProvider) {
 	$routeProvider

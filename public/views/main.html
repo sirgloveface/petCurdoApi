@@ -3,5 +3,32 @@
         <h2>
             Bienvenido Elementos <span class="label label-info">{{ list.length}}</span>
         </h2>
+
+        <ul class="collection">
+            <li class="collection-item avatar" ng-repeat="message in messages">
+                <img src="{{avatarUrl(message.sender_uuid)}}" alt="{{message.sender_uuid}}" class="circle">
+                <span class="title">#{{ message.sender_uuid}}</span>
+                <p><i class="prefix mdi-action-alarm"></i><span class="message-date">{{ message.date | date:"MM/dd/yyyy 'at' h:mma"}}</span></br> {{ message.content}}</p>
+            </li>
+        </ul> 
+        <footer class="teal">
+            <form ng-submit="sendMessage()" class="container">
+                <div class="row">
+                    <div class="input-field col s10">
+                        <i class="prefix mdi-communication-chat"></i>
+                        <input ng-model="messageContent" type="text" placeholder="Type your message" >
+                        <span class="chip left">
+                            <img src="{{avatarUrl(uuid)}}">
+                             #{{uuid}}
+                        </span>
+                    </div>
+                    <div class="input-field col s2">
+                        <button type="submit" class="waves-effect waves-light btn-floating btn-large">
+                            <i class="mdi-content-send">Enviar</i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </footer>
     </div>
 </div>
