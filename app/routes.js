@@ -50,10 +50,14 @@ pubnub.addListener({
     }
 });
 console.log("Subscribing.");
-
+pubnub.subscribe({
+    channels: ['conect-arduino'],
+    withPresence: true
+});
+/*
 pubnub.unsubscribe({
     channels: ['conect-arduino']
-});
+});*/
 
 /***
  * Metodo para obtener listas
