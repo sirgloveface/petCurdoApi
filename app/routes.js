@@ -1,7 +1,15 @@
-
+var promise = require('bluebird');
 var PubNub = require('pubnub');
 
+var options = {
+  // Initialization Options
+  promiseLib: promise
+};
 
+var pgp = require('pg-promise')(options);
+//var connectionString = process.env.ELEPHANTSQL_URL || 'postgres://postgres:curdo@localhost:5432/apicurdo';
+var connectionString = process.env.ELEPHANTSQL_URL || "postgres://mattveso:EoQSBnjPQRmONUw1H4sXK3lQD-YJQKpB@pellefant.db.elephantsql.com:5432/mattveso";
+var db = pgp(connectionString);
 
 var pubnub = new PubNub({
     publishKey: 'pub-c-24150dba-a538-4de7-af26-643500dd957d',
@@ -54,6 +62,9 @@ pubnub.subscribe({
     channels: ['conect-arduino'],
     withPresence: true
 });
+
+
+
 /*
 pubnub.unsubscribe({
     channels: ['conect-arduino']
@@ -66,14 +77,22 @@ pubnub.unsubscribe({
  * @returns {json} Objeto json con datos de la consulta
  */
 function getList(request, response) {
-    var data = [];
-    for (i = 0; i <= 50; i++) {
-        data.push(Math.floor(Math.random() * 500));
-    }
-    publishSampleMessage();
-    response.json(data); // return all todos in JSON format 
-}
-;
+    console.log("getList");
+    db.any('select * from log')
+    .then(function (data) {
+      publishSampleMessage();
+      // response.json(data); // return all todos in JSON format
+      response.status(200)
+        .json({
+          status: 'success',
+          data: data,
+          message: 'Retorno datos de la tabla log'
+        });
+    })
+    .catch(function (err) {
+        return next(err);
+    }); 
+};
 
 /***
  * Metodo para obtener el elemento dado un id
@@ -97,11 +116,20 @@ function get(request, response) {
  * @returns {json} Objeto json con los datos de la consulta
  */
 function insert(request, response) {
-    console.log(request.body);
-    var data = [];
-    response.json(request.body);
-}
-;
+     console.log(request.body);
+     db.one("INSERT INTO log(identifier, fecha) VALUES ( $1, now())",['John'])
+     .then(function (data) {
+      response.status(200)
+        .json({
+          status: 'success',
+          last_id : data.id,
+          message: 'Inserted log'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    }); 
+};
 
 /***
  * Metodo para actualizar segun id

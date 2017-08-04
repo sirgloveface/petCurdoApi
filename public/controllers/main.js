@@ -1,18 +1,18 @@
 'use strict';
 app.controller('mainController', function ($scope, generalFactory, Pubnub) {
     $scope.list = {};
-   /* generalFactory.getList().
-            then(function (response) {
-                console.log("response");
-                console.log(response.data);
-                $scope.list = response.data;
-            }).catch(function (response) {
-        console.log('error');
-        console.log(response);
-    })
-            .finally(function () {
-                console.log("finally");
-            });
+    /* generalFactory.getList().
+     then(function (response) {
+     console.log("response");
+     console.log(response.data);
+     $scope.list = response.data;
+     }).catch(function (response) {
+     console.log('error');
+     console.log(response);
+     })
+     .finally(function () {
+     console.log("finally");
+     });
      */
     $scope.messages = [];
     $scope.channel = 'conect-arduino';
@@ -37,7 +37,22 @@ app.controller('mainController', function ($scope, generalFactory, Pubnub) {
         if (!$scope.messageContent || $scope.messageContent === '') {
             return;
         }
-        Pubnub.publish({
+
+        var obj = JSON.stringify({
+            "identifier": "web",
+            "mensaje": $scope.messageContent
+        });
+        generalFactory.insert(obj).then(function (response) {
+            console.log("response");
+            console.log(response);
+
+        }).catch(function (response) {
+            console.log('error');
+        }).finally(function () {
+            console.log("finally");
+        });
+
+            Pubnub.publish({
             channel: $scope.channel,
             message: {
                 content: $scope.messageContent,
@@ -51,16 +66,15 @@ app.controller('mainController', function ($scope, generalFactory, Pubnub) {
         });
         // Reset input
         $scope.messageContent = '';
-
     };
-    
+
     // Subscribe to messages channel
     Pubnub.subscribe({
         channel: $scope.channel,
         triggerEvents: ['callback'],
-        withPresence : true
+        withPresence: true
     });
-    
+
     // Make it possible to scrollDown to the bottom of the messages container
     $scope.scrollDown = function (time) {
         var $elem = $('.collection');
@@ -68,7 +82,7 @@ app.controller('mainController', function ($scope, generalFactory, Pubnub) {
             scrollTop: $elem.height()
         }, time);
     };
-    
+
     $scope.scrollDown(400);
     // Escuando los mensajes recibidos.
     $scope.$on(Pubnub.getMessageEventNameFor($scope.channel), function (ngEvent, m) {
@@ -78,10 +92,10 @@ app.controller('mainController', function ($scope, generalFactory, Pubnub) {
                 channel: ["conect-arduino"],
                 includeUUIDs: true,
                 includeState: true,
-                callback:function(e){
-                console.log(e);
-            }
-           });
+                callback: function (e) {
+                    console.log(e);
+                }
+            });
         });
         $scope.scrollDown(400);
     });
