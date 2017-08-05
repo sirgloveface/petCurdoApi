@@ -1,7 +1,7 @@
 <!doctype html>
 <!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
 <!--[if (gte IE 9)|!(IE)]><html lang="en" class="no-js"> <![endif]-->
-<html class="no-js" lang="en" ng-app="petCurdoApi">
+<html class="no-js" lang="en" >
     <head>
         <!-- Basic -->
         <title>Tony Test::.</title>
@@ -27,16 +27,21 @@
 
     </head>
 
-    <body  ng-controller="mainController">
+    <body ng-app="petCurdoApi" >
 
         <div class="container">
 
-            <!-- header -->
-            <div class="jumbotron text-center">
-                <h1>Elementos <span class="label label-info">{{ list.length}}</span></h1>
+            <!-- page-body start -->
+            <div class="row">
+                <!-- page-wrapper start -->
+                <div id="page-wrapper">
+                    <!-- contenido start --> 
+                    <div ng-view=""></div>
+                    <!-- contenido end -->  
+                </div>
+                <!-- page-wrapper end -->
             </div>
-            <!-- header -->
-
+            <!-- page-body end -->
         </div>
 
         <!-- jquery -->
@@ -44,6 +49,12 @@
 
         <!-- angular -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <!-- angular-route -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+
+
+        <script src="https://cdn.pubnub.com/pubnub-3.7.21.js"></script>
+        <script src="https://cdn.pubnub.com/sdk/pubnub-angular/pubnub-angular-3.2.1.js"></script>
 
         <!-- main js -->
         <script src="js/app.js" type="text/javascript"></script>
@@ -57,6 +68,8 @@
         <!-- main controller -->
         <script src="controllers/main.js" type="text/javascript"></script>
 
+        <!-- pubnub controller -->
+        <script src="controllers/pubnub/pubnub.js" type="text/javascript"></script>
 
     </body>
 

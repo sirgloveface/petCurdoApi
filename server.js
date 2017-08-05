@@ -24,6 +24,18 @@ console.log("App listening on port : " + port);
 
 
 
+/*
+
+  {
+    "content": "prueba web",
+    "identifier": "console",
+    "id": 1,
+    "sender_uuid": "web-client",
+    "uuid": "web-client",
+    "date": new Date()
 
 
-  
+        
+          
+           
+}*/
