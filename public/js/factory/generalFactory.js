@@ -13,7 +13,7 @@ angular.module('petCurdoApi')
     };
 
     dataFactory.insert = function (obj) {
-        return $http.post("/insert", obj);
+        return $http.post("/insert/", obj);
     };
 
     dataFactory.update = function (obj) {

@@ -19,10 +19,10 @@ function publish() {
             },
             sendByPost: false // true to send via post
         };
-        pubnub.publish(publishConfig).then((response) => {
-            console.log(response);
-        }).catch((error) => {
-            console.log(error);
+       pubnub.publish(publishConfig, function(status, response) {
+            console.log(status, response);
+        },function(status, response) {
+            console.log(status, response);
         });
     }
 

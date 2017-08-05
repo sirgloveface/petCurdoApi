@@ -47,7 +47,8 @@ SET default_with_oids = false;
 CREATE TABLE log (
     id_log integer NOT NULL,
     identifier character varying(50),
-    fecha date
+    fecha date,
+    json json
 );
 
 

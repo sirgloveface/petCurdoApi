@@ -7,8 +7,8 @@ var options = {
 };
 
 var pgp = require('pg-promise')(options);
-//var connectionString = process.env.ELEPHANTSQL_URL || 'postgres://postgres:curdo@localhost:5432/apicurdo';
-var connectionString = process.env.ELEPHANTSQL_URL || "postgres://mattveso:EoQSBnjPQRmONUw1H4sXK3lQD-YJQKpB@pellefant.db.elephantsql.com:5432/mattveso";
+var connectionString = process.env.ELEPHANTSQL_URL || 'postgres://postgres:curdo@localhost:5432/apicurdo';
+//var connectionString = process.env.ELEPHANTSQL_URL || "postgres://mattveso:EoQSBnjPQRmONUw1H4sXK3lQD-YJQKpB@pellefant.db.elephantsql.com:5432/mattveso";
 var db = pgp(connectionString);
 
 var pubnub = new PubNub({
@@ -22,7 +22,7 @@ function publishSampleMessage() {
     var publishConfig = {
         channel: "conect-arduino",
         message: {
-            "id": 43,
+            "id": 3,
             "content": "contenido nodejs",
             "uuid": "node-client",
             "sender_uuid": "node-client",
@@ -31,11 +31,13 @@ function publishSampleMessage() {
         user: "node-client",
         sendByPost: false // true to send via post
     };
-    pubnub.publish(publishConfig).then((response) => {
-        console.log(response);
-    }).catch((error) => {
-        console.log(error);
-    });
+
+     pubnub.publish(publishConfig, function(status, response) {
+            console.log(status, response);
+        },function(status, response) {
+            console.log(status, response);
+        });
+    
 }
 
 pubnub.addListener({
@@ -50,7 +52,7 @@ pubnub.addListener({
     },
     presence: function (presenceEvent) {
         console.log("presenceEvent");
-         console.log(presenceEvent.action); // online status events
+        console.log(presenceEvent.action); // online status events
         console.log(presenceEvent.timestamp); // timestamp on the event is occurred
         console.log(presenceEvent.uuid); // uuid of the user
         console.log(presenceEvent.occupancy); // current number of users online
@@ -77,7 +79,6 @@ pubnub.unsubscribe({
  * @returns {json} Objeto json con datos de la consulta
  */
 function getList(request, response) {
-    console.log("getList");
     db.any('select * from log')
     .then(function (data) {
       publishSampleMessage();
@@ -116,18 +117,19 @@ function get(request, response) {
  * @returns {json} Objeto json con los datos de la consulta
  */
 function insert(request, response) {
-     console.log(request.body);
-     db.one("INSERT INTO log(identifier, fecha) VALUES ( $1, now())",['John'])
+     db.oneOrNone("INSERT INTO log(identifier, fecha, json) VALUES ( $1, now(), $2)",['John', JSON.stringify(request.body)])
      .then(function (data) {
       response.status(200)
         .json({
           status: 'success',
-          last_id : data.id,
+          last_id : 1,
           message: 'Inserted log'
         });
     })
     .catch(function (err) {
-      return next(err);
+         console.log(err);
+         console.log("query failed!");
+         return;
     }); 
 };
 

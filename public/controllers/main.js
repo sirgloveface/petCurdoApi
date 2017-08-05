@@ -1,19 +1,7 @@
 'use strict';
 app.controller('mainController', function ($scope, generalFactory, Pubnub) {
     $scope.list = {};
-    /* generalFactory.getList().
-     then(function (response) {
-     console.log("response");
-     console.log(response.data);
-     $scope.list = response.data;
-     }).catch(function (response) {
-     console.log('error');
-     console.log(response);
-     })
-     .finally(function () {
-     console.log("finally");
-     });
-     */
+   
     $scope.messages = [];
     $scope.channel = 'conect-arduino';
     $scope.messageContent = '';
@@ -37,35 +25,38 @@ app.controller('mainController', function ($scope, generalFactory, Pubnub) {
         if (!$scope.messageContent || $scope.messageContent === '') {
             return;
         }
-
         var obj = JSON.stringify({
+            "id": 2,
             "identifier": "web",
-            "mensaje": $scope.messageContent
+            "content": $scope.messageContent,
+            "sender_uuid": $scope.uuid,
+            "uuid": $scope.uuid,
+            "date": new Date()
         });
         generalFactory.insert(obj).then(function (response) {
-            console.log("response");
-            console.log(response);
-
+            console.log(response.data);
         }).catch(function (response) {
             console.log('error');
-        }).finally(function () {
-            console.log("finally");
+        }).finally(function () { 
+             Pubnub.publish({
+                channel: $scope.channel,
+                message: {
+                    "id": 2,
+                    "identifier": "web",
+                    "content": $scope.messageContent,
+                    "sender_uuid": $scope.uuid,
+                    "uuid": $scope.uuid,
+                    "date": new Date()
+                },
+                callback: function (m) {
+                    //console.log(m);
+                }
+            });
+            // Reset input
+            $scope.messageContent = '';
         });
 
-            Pubnub.publish({
-            channel: $scope.channel,
-            message: {
-                content: $scope.messageContent,
-                sender_uuid: $scope.uuid,
-                uuid: $scope.uuid,
-                date: new Date()
-            },
-            callback: function (m) {
-                console.log(m);
-            }
-        });
-        // Reset input
-        $scope.messageContent = '';
+           
     };
 
     // Subscribe to messages channel
