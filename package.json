@@ -1,5 +1,5 @@
 {
-  "name": "petcurdoapi",
+  "name": "petCurdoApi",
   "version": "1.0.0",
   "description": "Api para conexion con aplicacion de conexion y alimentacion",
   "main": "server.js",

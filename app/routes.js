@@ -117,12 +117,11 @@ function get(request, response) {
  * @returns {json} Objeto json con los datos de la consulta
  */
 function insert(request, response) {
-     db.oneOrNone("INSERT INTO log(identifier, fecha, json) VALUES ( $1, now(), $2)",['John', JSON.stringify(request.body)])
+     db.oneOrNone("INSERT INTO log(identifier, fecha, json) VALUES ( $1, now(), $2)",[request.body.sender_uuid, JSON.stringify(request.body)])
      .then(function (data) {
       response.status(200)
         .json({
           status: 'success',
-          last_id : 1,
           message: 'Inserted log'
         });
     })
