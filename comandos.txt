@@ -19,3 +19,7 @@ cf login -u  XXXXXX@gmail.com -p clave
 cf buildpacks
 //Subir apicacion a pivotal
 cf push petCurdoApi -c "node server.js"
+// Listas aplicaciones en pubnub
+cf apps
+// Listar services
+cf services
